@@ -60,6 +60,10 @@ UsePAM yes
 EOF
 
 echo "==> Проверяю SSH config..."
+
+mkdir -p /run/sshd
+chmod 0755 /run/sshd
+
 sshd -t
 
 echo "==> Настраиваю UFW..."
