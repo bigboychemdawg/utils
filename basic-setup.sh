@@ -15,8 +15,13 @@ if ! grep -qi "ubuntu" /etc/os-release; then
 fi
 
 echo "==> Устанавливаю пакеты..."
+export DEBIAN_FRONTEND=noninteractive
+
 apt-get update -y
-apt-get install -y openssh-server ufw fail2ban
+apt-get install -y \
+  -o Dpkg::Options::="--force-confdef" \
+  -o Dpkg::Options::="--force-confold" \
+  openssh-server ufw fail2ban
 
 echo "==> Создаю backup sshd_config..."
 cp /etc/ssh/sshd_config "/etc/ssh/sshd_config.backup.$(date +%F-%H%M%S)"
