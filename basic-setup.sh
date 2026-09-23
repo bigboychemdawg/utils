@@ -90,12 +90,13 @@ systemctl enable ssh 2>/dev/null || systemctl enable sshd 2>/dev/null || true
 
 echo "==> Перезапускаю SSH..."
 
-if systemctl list-unit-files | grep -q '^ssh.service'; then
-  systemctl restart ssh
-elif systemctl list-unit-files | grep -q '^sshd.service'; then
-  systemctl restart sshd
+if systemctl cat ssh.service >/dev/null 2>&1; then
+  systemctl restart ssh.service
+elif systemctl cat sshd.service >/dev/null 2>&1; then
+  systemctl restart sshd.service
 else
   echo "❌ Не найден ssh.service или sshd.service"
+  systemctl list-unit-files 'ssh*' 'sshd*' || true
   exit 1
 fi
 
